@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/assets/css/script.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/slideshow.css}">
+    <title>Chi tiet san pham</title>
+</head>
+<style>
+    .box-header{
+        margin: 15px;
+    }
+    .box-infor{
+        margin-top: 15px;
+    }
+    .product-detail{
+    flex-direction: column;
+    gap: 30px;
+    display: flex;
+    }
+</style>
+<body>
+    <header th:replace="/header.html :: header"></header>
+
+    <!-- Main--------------------------- -->
+    <div class="w-container">
+
+
+        <div class="container">
+
+
+            <div class="product-detail">
+                <div class="box-header">
+                    <h1  id="Name-Pro" th:text="${product.productName }+' '+ ${product.storage=='NULL'?'':product.storage} +' ' +
+                    ${product.color}+${product.isNew ==1?' - Chính hãng':''}" th:data-cate="${product.categoryID}" th:data-namep="${product.productName}">
+                        text
+                    </h1>
+                </div>
+
+                <div class="box-infor">
+
+                     <!-- -----------******* LEFT ******* -->
+                    <div class="deltail-infor-left">
+                        <div class="box-gallery mb-2">
+                            <div class="love-this-button">
+                                    <a title="Thêm vào sản phẩm yêu thích" href="javascript:wishProduct(5613, false)">
+                                        <i class="icon-HeartSolidOff"></i>
+                                        <i class="icon-HeartSolidOn"></i>
+                                    </a>
+                            </div>
+                       <!-- Slide Show-->
+                            <div class="slideshow-container">
+                                    <!-- Full-width images with number and caption text -->
+                                    <div class="mySlides">
+                                    <div class="numbertext">1 / 3</div>
+                                    <img  id="img-1" th:src="${product.image}" width="300" >
+                                    <div class="text">Caption Text</div>
+                                    </div>
+                                
+                                    <div class="mySlides">
+                                    <div class="numbertext">2 / 3</div>
+                                    <img th:src="@{/assets/img/app1.webp}"width="300" >
+                                    <div class="text">Caption Two</div>
+                                    </div>
+                                
+                                    <div class="mySlides">
+                                    <div class="numbertext">3 / 3</div>
+                                    <img th:src="@{/assets/img/logo_p.jpg}"  width="300">
+                                    <div class="text">Caption Three</div>
+                                    </div>
+                                
+                                    <!-- Next and previous buttons -->
+                                    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                                    <a class="next" onclick="plusSlides(1)">&#10095;</a>
+                            </div>
+                      <br>
+                            <!-- The dots/circles -->
+                            <div style="text-align:center">
+                                <span class="dot" onclick="currentSlide(1)"></span>
+                                <span class="dot" onclick="currentSlide(2)"></span>
+                                <span class="dot" onclick="currentSlide(3)"></span>
+                            </div>
+                         <div class="box-contenta">
+                            <div class="banner-content">
+                                <div class="icon-document">
+                                    <i class="fa-light fa-audio-description"></i>
+                                </div>
+                                <div class="description"><span>Thông tin sản phẩm</span></div>
+                            </div>
+                            <div class="content-description" th:text="${product.description}">
+                 
+                            </div>
+                         </div>   
+                    </div>
+
+                    </div>
+
+                    <!-- -----------******* RIGHT ******* -->
+                    <div class="deltail-infor-right">
+                        <div class="position-relative  flex-wrap-reverse">
+                            <!-- Price Price -->
+                            <div class="box-price">
+                                <strong class="price"  th:text="${product.getPriceDiscountString()}+' ₫'">
+                                </strong>
+                                <!-- <strong class="price"  >1000000 ₫
+                                </strong> -->
+                                <!-- th:text="${product.Price}+₫ -->
+                                    <span class="LastPrice"  th:text="${product.getPriceString()} +' ₫'"style="margin-left:7px;"> ₫</span>
+                                
+                            </div>
+                            <div style=" position: absolute; right: 0; top: 0;font-size: 12px">
+                                <label>SKU:</label> <strong style="color:black;font-size: 13px;" id="dfSKU">MYWX3VN</strong>
+                            </div>
+                        
+                        </div>
+                        <!-- Optionsssssssss -->
+                        <div class="box-product-option version" th:if="${product.storage != 'NULL'}">
+                            <strong class="label" th:text="${product.storage != 'NULL' ? 'Lựa chọn phiên bản' : ''}">
+                                Lựa chọn phiên bản
+                            </strong>
+                            
+                            <div class="list-option" id="option-version" data-id="5">
+                                <div th:each="a, iterStat: ${liststorage}" 
+                                     th:data-sku="${a}" 
+                                     class="item-option btn-active"
+                                     th:classappend="${a == product.storage ? ' selected' : ''}">
+                                    <a th:href="@{/details/{loaisanpham}/{tensanpham}/{storage}
+                                    (loaisanpham=${product.categoryID}, tensanpham=${product.productName},storage=${a}) }">
+                                        <span th:text="${a}" class="click-here">256GB</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Option-Color------------------- -->
+                        <div class="box-product-option color">
+                            <strong class="label">
+                                Lựa chọn màu
+                            </strong>
+                            <div class="list-option" id="option-color">
+                                <div th:each="producta, iterStat : ${listcolorproduct}" 
+                                    th:data-name="${producta.color}" 
+                                    th:data-skua="${producta.productID} "
+                                    th:data-pricenote="${producta.price} - (${producta.price} * ${producta.discount} / 100)" 
+                                    class="item-option btn-active" 
+                                    th:classappend="${producta.color == product.color ? ' selected' : ''}">
+                                    <img th:src="${producta.image}" 
+                                        th:title="${producta.productName}" alt="Titan Tự Nhiên">
+                                    <div class="color-price">
+                                        <span  th:text="${producta.color}" >Titan Tự Nhiên</span>
+                                        <p th:text="${producta.getPriceDiscountString()}+ ' ₫'">32,990,000 ₫</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <!-- SELLL -->
+                        <div class="btn-event">
+
+
+                            <a target="_blank" title="Thu cũ, đổi mới lên đời iPhone 16 Pro Max - Chính hãng VN/A" href="/thu-cu-doi-moi?id=5613" class="renew item">
+                                
+                                <div class="sub-title">Thu cũ trợ giá tới <strong th:data-val="(${product.Price} - (${product.getDiscount()}/100))- 5000000 +' ₫'" class="renewPrice" th:text= "5000000 +' ₫'">5,000,000 ₫</strong></div>
+                                <div class="renewValue bestPrice" th:text="(${product.Price} - (${product.Price}* (${product.getDiscount()}/100)))+' ₫'">27,990,000 ₫</div>
+                                <span class="item-more">Lên đời ngay &gt;&gt;</span>                                   
+                            </a>
+                        </div>
+
+
+                        <!-- *-*-*-*-*-*-*-*-*- BUYYYYY *******----------- -->
+                        <div class="box-order product-action">
+
+                            <div class="box-order-btn">
+                                <a title="Mua ngay" data-sku="MYWY32VN"  class="add-buy order-btn btnQuickOrder">
+                                    <strong>MUA NGAY</strong>
+                                    <span> (Giao tận nhà hoặc nhận tại cửa hàng)</span></a>
+                                <!-- <a title="Thêm vào giỏ hàng" data-sku="product" th:href="@{addToCart}" class="add-buy add-cart">
+                                    <i class="icon-Cart1SolidOn"></i>
+                                    <label>Thêm giỏ hàng</label>
+                                </a> -->
+                                <!-- Ví dụ về nút thêm vào giỏ hàng -->
+                                <!-- Nút Thêm vào giỏ hàng -->
+                                <form action="#" method="post">
+                                    <input type="hidden"  id="productId" name="productId" th:value="${product.productID}"> <!-- Sử dụng product.IDP -->
+                                    <button type="submit" class="add-to-cart-btn">
+                                        Thêm vào giỏ
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+
+                    </div>
+                
+                </div>
+            </div>
+    
+        </div>
+    </div>
+
+    <footer th:insert="~{/footer.html :: footer}"></footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script th:src="@{/js/script.js}"></script>
+    <script th:src="@{/js/addToCart.js}"></script>
+    
+    <!-- <script th:src="@{/js/addToCart.js}"></script> -->
+  
+</body>
+</html>

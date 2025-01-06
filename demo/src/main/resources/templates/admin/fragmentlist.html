@@ -1,0 +1,44 @@
+<!-- Đây là phần fragment cho danh sách sản phẩm -->
+<div id="productListFragment">
+    <table class="table">
+        <thead style="background: #81B5B2;">
+            <tr>
+                <td>Mã sản phẩm</td>
+                <td>Hình ảnh</td>
+                <td>Tên</td>
+                <td>Loại hàng</td>
+                <td>Số lượng</td>
+                <td>Giá</td>
+                <td>Giảm giá</td>
+                <td>Ghi chú</td>
+                <td colspan="2">Chức năng</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:if="${#lists.isEmpty(products)}">
+                <td colspan="10" style="text-align: center; color: red;">Không tìm thấy sản phẩm</td>
+            </tr>
+            <tr th:each="product : ${products}">
+                <td th:text="${product.productID}" th:id="'product-' + ${product.productID}"></td>
+                <td><img th:src="@{${product.image}}" alt="123" width="60" style="object-fit: cover;"></td>
+                <td th:text="${product.productName}"></td>
+                <td th:text="${product.categoryID}"></td>
+                <td th:text="${product.quantity}"></td>
+                <td th:text="${product.price + ' d'}"></td>
+                <td th:text="${product.discount + '%'}"></td>
+                <td th:text="${product.description}"></td>
+                <td><a th:href="@{/admin/productphone/UpdatePro/{masanpham}/{namepro}/{color}/{storage}/{price} 
+                        (masanpham=${product.productID}, 
+                        namepro=${product.productName}, 
+                        color=${product.color}, 
+                        storage=${product.storage}, 
+                        price=${product.price})}">
+                    <button type="button" class="btn btn-success">Sửa</button>
+                </a></td>
+                <td>
+                    <button type="button" class="btn btn-danger btn-deleted-u" name="deleted" th:data-id="${product.productID}">Xóa</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

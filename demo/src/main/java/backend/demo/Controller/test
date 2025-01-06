@@ -1,0 +1,57 @@
+  @GetMapping("/gotoorder/success")
+    public String paymentSuccesse(@RequestParam(name = "vnp_Amount", required = false) String amount,
+                                  @RequestParam(name = "vnp_BankCode", required = false) String bankCode,
+                                  @RequestParam(name = "vnp_BankTranNo", required = false) String bankTranNo,
+                                  @RequestParam(name = "vnp_CardType", required = false) String cardType,
+                                  @RequestParam(name = "vnp_OrderInfo", required = false) String orderInfo,
+                                  @RequestParam(name = "vnp_PayDate", required = false) String payDate,
+                                  @RequestParam(name = "vnp_ResponseCode", required = false) String responseCode,
+                                  @RequestParam(name = "vnp_TmnCode", required = false) String tmnCode,
+                                  @RequestParam(name = "vnp_TransactionNo", required = false) String transactionNo,
+                                  @RequestParam(name = "vnp_TransactionStatus", required = false) String transactionStatus,
+                                  @RequestParam(name = "vnp_TxnRef", required = false) String txnRef,
+                                  @RequestParam(name = "vnp_SecureHash", required = false) String secureHash,
+                                  Model model,
+                                  HttpSession session){
+            // Thanh tien
+            model.addAttribute("amount", amount);
+            // Ma ngan hang
+            model.addAttribute("bankCode", bankCode);
+            // Số giao dịch ngân hàng
+            model.addAttribute("bankTranNo", bankTranNo);
+            // Loại thẻ
+            model.addAttribute("cardType", cardType);
+            // Thông tin đơn hàng
+            model.addAttribute("orderInfo", orderInfo);
+            // Ngày thanh toán
+            model.addAttribute("payDate", payDate+"\n");
+            model.addAttribute("responseCode", responseCode);
+            model.addAttribute("tmnCode", tmnCode+"\n!: ");
+            model.addAttribute("transactionNo", transactionNo);
+            model.addAttribute("transactionStatus", transactionStatus);
+            model.addAttribute("txnRef", txnRef+"\n");
+            model.addAttribute("secureHash", secureHash);
+            List<Map<String,String>>products =(List<Map<String,String>>)session.getAttribute("products");
+
+            for (Map<String, String> product : products) {
+            System.out.println("Product ID: " + product.get("productID"));
+            System.out.println("Size: " + product.get("productSIZE"));
+            System.out.println("Color: " + product.get("productCOLOR"));
+            System.out.println("Quantity: " + product.get("productQT"));
+            System.out.println("Price: " + product.get("productPRICE"));
+            System.out.println("-----------------------");
+            }
+            System.out.println("-----------------------");
+            System.out.println("-----------------------");
+            System.out.println("-----------------------");
+            System.out.println("-----------------------");
+            System.out.println("-----------------------");
+            System.out.println("-----------------------");
+            Map<String, String> formData= (Map<String, String>)session.getAttribute("formDataa");
+            Set<String> key=formData.keySet();
+            for (String string : key) {
+                System.out.println(key + " " + formData.get(string));
+            }
+        return "order/ordersuccess";
+    }
+    

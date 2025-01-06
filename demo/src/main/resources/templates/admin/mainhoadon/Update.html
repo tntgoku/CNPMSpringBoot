@@ -1,0 +1,136 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>DANH SÁCH HÓA ĐƠN</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <link rel="stylesheet" th:href="@{/assets/css/admin/admin.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/admin/updateoder.css}">
+        <!-- <link rel="stylesheet" href="../../../static/assets/css/admin/updateoder.css"> -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div th:replace="/admin/theme.html :: headeradmin "></div>
+
+    <div class="section home-section">
+        <nav>
+            <div class="sidebar-button" >
+                <span style="font-size: 35px;">DANH SÁCH HÓA ĐƠN</span>
+            </div>
+            <div class="profile-user">
+                <img src="/img/item/a3.png" width="40px" alt="">
+                <span class="name-user" style="
+                font-size: 16px;
+                font-weight: 600;">aadwawd</span>
+                <div class="icondown" style="cursor: pointer;">
+                    <i class="fa-solid fa-chevron-down"></i>
+                    <div class="box-user">
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header">
+                    <h2></h2>
+                </div>
+            </div>
+            <div class="card-body " style="">
+            <form action="" method="post" style="background :#e4e9f7; padding: 10px;" enctype="multipart/form-data">
+                    <div class="form-group" style="margin-top: 10px;">
+                        <label for="" >Mã hóa đơn</label>
+                        <input type="text" name="id_product" th:value="${producta.orderID}" style="    margin-left: 15px;"readonly>
+                    </div>
+                    <div class="infor-userbuy" style="margin: 10px 0;">
+                        <div class="form-1">
+                            <label for="">Họ tên</label>
+                            <input type="text" name="id_product1" th:value="${producta.nameUser}">
+                        </div>
+                        <div class="form-1">
+                            <label for="">Số điện thoại</label>
+                            <input type="text" name="id_product2" th:value="${producta.phone}"style="">
+                        </div>
+                    </div>
+                    <div class="infor-userbuy" style="margin: 10px 0;">
+                        <label for="">Email</label>
+                        <input type="text" name="id_product3" th:value="${producta.email}"style="">
+                    </div>
+                    <div class="infor-userbuy" style="margin: 10px 0;">
+                        <label for="">Địa chỉ:</label>
+                        <input type="text" name="id_product4" th:value="${producta.addressU}"style="">
+                    </div>
+                    <div class="infor-userbuy" style="margin: 10px 0;">
+                        <div class="form-1">
+                            <label for="">Phương thức thanh toán:</label>
+                            <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
+                                <option  th:each="entry: ${listpayment}"th:value="${entry.key}" 
+                                th:text="${entry.value}" 
+                                th:selected="${entry.key == producta.getPayment()}">
+                                <!-- The option will be selected if the payment method matches the current payment -->
+                            </option>
+                        </select>
+                        </div>
+                        <div class="form-1">
+                            <label for="">Trạng thái đơn hàng: </label>
+                            <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
+
+                                <option  th:each="entry: ${liststatus}"th:value="${entry.key}" 
+                                th:text="${entry.value}" 
+                                th:selected="${entry.key == producta.getStatus()}">
+                                <!-- The option will be selected if the payment method matches the current payment -->
+                            </option>
+                        </select>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin: 10px 0;">
+                        <label for="" th:text="'Tổng tiền: '+${total}">Tổng tiền: 1532</label>
+                    </div>
+                        <table class="table" style="padding: 20px;">
+                            <thead style="background: #81B5B2; text-align: center;"> <tr>
+                                <td>Mã sản phẩm</td>
+                                <td>Hình ảnh</td>
+                                <td>Tên sản phẩm</td>
+                                <td>Số lượng</td>
+                                <td>Màu sắc</td>
+                                <td>Loại</td>
+                                <td>Thành tiền</td>
+                                <td colspan="2">Chức năng</td>
+                            </tr></thead>
+                            <tbody>
+                                <tr th:if="${#lists.isEmpty(productss)}">
+                                    <td colspan="10" style="text-align: center; color: red;">Không tìm thấy sản phẩm</td>
+                                </tr>
+                                            <tr th:each= "product : ${productss}">
+                                                <td th:text= "${product. getProductID()}"></td>
+                                                <td><img th:src="${product.getimg()}" alt="" width="60px"></td>
+                                                <td th:text="${product. getname()}"></td>
+                                                <td th:text="${product.getQuantity()}"></td>
+                                                <td th:text="${product.getColor()}"></td>
+                                                <td th:text="${product.getStorage()}"></td>
+                                                <td th:text="${product.getUnitPrice()}"></td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                    <textarea name="notice" id="notification">
+
+                                        Ghi cu
+                                    </textarea>
+                                    <br>
+            
+                <!-- Add other fields as needed -->
+                <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+            </form>
+            </div>
+        </div>
+    </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="scriptad.js">
+</script>
+</body>
+</html>

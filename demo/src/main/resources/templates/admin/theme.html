@@ -1,0 +1,91 @@
+<div class="headerr" th:fragment="headeradmin">
+    <form class="sidebar" method="post" style="transition: all 1s cubic-bezier(0.4, 0, 1, 1);">
+        <div class="logo-details">
+            <img th:src="@{/assets/img/logo_p.jpg}" alt="" width="100" height="108">
+        </div>
+        
+        <ul class="nav-link">
+            <li>
+                <a th:href="@{/admin}">
+                    <img th:src="@{/assets/img/icon/dashboard.png}" alt="">
+                    <span class="link_name">Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/xulydon}">
+                    <img th:src="@{/assets/img/icon/product-page.png}">
+                    <span class="link_name">Don hang</span>
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin/productphone}">
+                    <img th:src="@{/assets/img/icon/product-page.png}">
+                    <span class="link_name">Sản phẩm</span>
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin/hoadon}">
+                    <img th:src="@{/assets/img/icon/dashboard.png}"alt="">
+                    <span class="link_name">Hóa đơn</span>
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin/customer}">
+                    <img th:src="@{/assets/img/icon/people.png}" alt="">
+                    <span class="link_name">Khách hàng</span>
+                </a>
+            </li>
+            <li>
+                <a href="@{orderss}">
+                    <img th:src="@{/img/icon/dashboard.png}" alt="">
+                    <span class="link_name">Quản lý bài viết(news)</span>
+                </a>
+            </li>
+            <li>
+            <a th:href=@{/}>
+                    <img th:src="@{/assets/img/icon/dashboard.png}" alt="">
+                    <span class="link_name">Quay lai trang index</span>
+                </a>
+            </li>
+        </ul>
+        <div class="bottom-content" style="list-style: none;">
+            <li>
+                <a th:href="@{/logout}" style="text-decoration: none;">
+                    <i class="fa-solid fa-right-from-bracket" style="font-size: 30px; margin-left: 5px;"></i>
+                    <span class="nav-text" style="margin-left: 45px;">Logout</span>
+                </a>
+            </li>
+        </div>
+    </form>
+    <nav style="        left: 260px;
+    position: relative;
+    width: calc(100% - 260px);
+    align-items: center;
+    display: flex
+;
+    justify-content: space-between;
+    padding: 20px;">
+        <div class="sidebar-button" >
+            <i class="fa-solid fa-bars sidebarBtn" style="font-size: 35px; margin-right: 10px;cursor: pointer; "></i>
+            <span style="font-size: 35px;">Dashboard</span>
+        </div>
+        <div class="profile-user">
+            <img th:src="@{/img/item/a3.png}" width="40px" alt="">
+            <span class="name-user" style="
+            font-size: 16px;
+            font-weight: 600;">Admin</span>
+            <div class="icondown" style="cursor: pointer;">
+                <i class="fa-solid fa-chevron-down"></i>
+                <div class="box-user">
+                <div class="login">
+                  <div id="box">
+                      <ul id="list-itema">
+                          <li id="itema"><a href="">Tài khoản của tôi</a></li>
+                          <li id="itema"><a th:href="@{/logout}">Đăng xuất</a></li> <!-- Thêm link đăng xuất -->
+                      </ul>
+                  </div></div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>

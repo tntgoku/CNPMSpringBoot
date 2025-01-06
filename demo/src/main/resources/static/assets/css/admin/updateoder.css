@@ -1,0 +1,13 @@
+
+
+.infor-userbuy{
+    display: flex;
+    align-items: center;
+    gap: 17px;
+    padding: 5px;
+}
+
+.form-1 {
+    display: flex;
+    gap: 15px;
+}
