@@ -13,124 +13,57 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <form class="sidebar" method="post" style="transition: all 1s cubic-bezier(0.4, 0, 1, 1);">
-        <div class="logo-details">
-            <img th:src="@{/assets/img/logo_p.jpg}" alt="" width="100px">
-        </div>
-        
-        <ul class="nav-link">
-            <li>
-                <a th:href="@{Dashboard}">
-                    <img th:src="@{/assets/img/icon/dashboard.png}" alt="">
-                    <span class="link_name">Dashboard</span>
-                </a>
-            </li>
-            <li>
-                <a th:href="@{/xulydon}">
-                    <img th:src="@{/assets/img/icon/product-page.png}">
-                    <span class="link_name">Don hang</span>
-                </a>
-            </li>
-            <li>
-                <a th:href="@{mainProduct}">
-                    <img th:src="@{/assets/img/icon/product-page.png}">
-                    <span class="link_name">Sản phẩm</span>
-                </a>
-                
-            </li>
-            <li>
-                <a th:href="@{/hoadon}">
-                    <img th:src="@{/assets/img/icon/dashboard.png}" alt="">
-                    <span class="link_name">Hóa đơn</span>
-                </a>
-            </li>
-            <li>
-                <a th:href="@{/gotocustomer}">
-                    <img th:src="@{/assets/img/icon/people.png}" alt="">
-                    <span class="link_name">Khách hàng</span>
-                </a>
-            </li>
-            <li>
-                <a th:href="@{orderss}">
-                    <img th:src="@{/assets/img/icon/dashboard.png}" alt="">
-                    <span class="link_name">Quản lý bài viết(news)</span>
-                </a>
-            </li>
-            <li>
-            <a href="/Projecte/View/index.php">
-                    <img th:src="@{/img/icon/dashboard.png}" alt="">
-                    <span class="link_name">Quay lai trang index</span>
-                </a>
-            </li>
-        </ul>
-        <div class="bottom-content" style="list-style: none;">
-            <li>
-                <a href="" style="text-decoration: none;">
-                    <i class="fa-solid fa-right-from-bracket" style="font-size: 30px; margin-left: 5px;"></i>
-                    <span class="nav-text" style="margin-left: 45px;">Logout</span>
-                </a>
-            </li>
-        </div>
-    </form>
+    <div th:replace="/admin/theme.html :: headeradmin "></div>
+    
     <div class="section home-section">
-        <nav>
-            <div class="sidebar-button" >
-                <i class="fa-solid fa-bars sidebarBtn" style="font-size: 35px; margin-right: 10px;cursor: pointer; "></i>
-                <span style="font-size: 35px;">Dashboard</span>
-            </div>
-            <div class="profile-user">
-                <img th:src="@{/assets/img/item/a3.png}" width="40px" alt="">
-                <span class="name-user" style="
-                font-size: 16px;
-                font-weight: 600;">aadwawd</span>
-                <div class="icondown" style="cursor: pointer;">
-                    <i class="fa-solid fa-chevron-down"></i>
-                    <div class="box-user">
-                    </div>
-                </div>
-            </div>
-        </nav>
+    
         <div class="container-fluid">
             <div class="card" style="margin-bottom:15px;">
                 <div class="card-header">
                     <h2>thêm sản phẩm</h2>
                 </div>
             </div>
+            <h1 th:if="${successfully!=null}" th:text="${successfully}" style="color: #609232;"></h1>
             <div class="card-body " style="margin-bottom:15px;">
-                <form action="/addPro" method="post" enctype="multipart/form-data" width="600px">
-                    <div class="form-group">
-                        <label for="">Mã sản phẩm</label>
-                        <input type="text" name="IDP">
-                    </div>
+                <form th:action="@{/admin/addPro}" method="post" enctype="multipart/form-data" width="600px">
                     <div class="form-group">
                         <label for="">Tên sản phẩm</label>
-                        <input type="text" name="nameP">
+                        <input type="text" name="nameP" required>
                     </div>
                     <div class="form-group">
-                        <label for="">loại hàng</label>
-                        <select name="type_id" id="type_id">
-                            <option th:value="1" th:text="1"></option>
+                        <label for="">loại sản phẩm</label>
+                        <select name="type_id" id="">
+                            <option th:each="itemcate: ${listCate} " th:value="${itemcate.id}" 
+                            th:text="${itemcate.name}" 
+                            th:selected="${itemcate.id == 1}"></option>
                         </select>
                     </div>
-                    
+                    <div class="form-group">
+                        <label for="">Màu sắc</label>
+                        <input type="text" name="Color" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Dung lượng(Nếu Có)</label>
+                        <input type="text" name="storage" >
+                    </div>
                     <div class="form-group">
                         <label for="">Giá</label>
-                        <input type="text" name="cost">
+                        <input type="text" name="cost" required>
                     </div>
                     <div class="form-group">
                         <label for="">Số lượng</label>
-                        <input type="text" name="Quantity">
+                        <input type="text" name="Quantity" required>
                     </div>
                     <div class="form-group">
                         <label for="">Giảm giá</label>
-                        <input type="text" name="discount">
+                        <input type="text" name="discount" required>
                     </div>
                     <div class="form-group">
                         <label for="">Hình ảnh</label>
-                        <input type="file" name="img">
+                        <input type="file" name="img" >
                     </div>
                     <div class="form-group">
-                        <label for="">Hình ảnh</label>
+                        <label for="">Ghi chú</label>
                         <input type="text" name="desc">
                     </div>
                     <div class="btn-box">

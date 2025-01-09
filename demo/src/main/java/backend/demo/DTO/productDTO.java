@@ -221,4 +221,40 @@ public class productDTO {
 						rs.getInt("discount")
                     );
 	}
+
+	public int UpdateDTO(iPhone product){
+		// Câu lệnh SQL để cập nhật sản phẩm
+		String sql = "UPDATE Products " +
+		"SET ProductName = ?, " +
+		"    CategoryID = ?, " +
+		"    IsNew = ?, " +
+		"    Storage = ?, " +
+		"    Color = ?, " +
+		"    Price = ?, " +
+		"    Quantity = ?, " +
+		"    Image = ?, " +
+		"    Discount = ?, " +
+		"    Description = ?, " +
+		"    Timer = GETDATE() " + // Cập nhật thời gian hiện tại
+		"WHERE ProductID = ?";	
+		return jdbcTemplate.update(sql, product.getProductName(),product.getCategoryID(),product.getIsNew(),
+								 product.getStorage(),product.getColor(),product.getPrice(),product.getQuantity(),
+								product.getImage(),product.getDiscount(),product.getDescription(),product.getProductID());
+	}
+
+
+	public int deleteProduct(int productId) {
+		// Câu lệnh SQL để xóa sản phẩm
+		String sql = "DELETE FROM Products WHERE ProductID = ?";
+	
+		// Thực thi câu lệnh SQL
+		return jdbcTemplate.update(sql, productId);
+	}
+
+	public int addProduct(String productName, int categoryId,int isNEW, String storage, String color, int price, int quantity, String image, int discount, String description) {
+		String sql = "INSERT INTO Products (ProductName, CategoryID, isNew, Storage, Color, Price, Quantity, Image, Discount, Timer, Description) " +
+					 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), ?)";
+		return jdbcTemplate.update(sql, productName, categoryId,isNEW, storage, color, price, quantity, image, discount, description);
+	}
+	
 }	

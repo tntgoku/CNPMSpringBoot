@@ -35,31 +35,34 @@
                                 <label>Giỏ hàng</label>
                             </div>
                             <div class="Items" th:if="${listproduct != null}" th:each="product : ${listproduct}">
-                                <div class="image-product" th:data-productID="${product.item.productID}" 
-                                                           th:data-productSIZE="${product.item.storage}" 
-                                                           th:data-productCOLOR="${product.item.color}"
-                                                           th:data-productQT="${product.getQuantity()}"
-                                                           th:data-productPRICE="${product.getTotalPrice()}"
-                                                           >
+                                <div class="image-product" 
+                                    th:data-productID="${product.item.productID}" 
+                                    th:data-productSIZE="${product.item.storage}" 
+                                    th:data-productCOLOR="${product.item.color}" 
+                                    th:data-productQT="${product.getQuantity()}"
+                                    th:data-productPRICE="${product.getTotalPrice()}">
+                                    
                                     <img th:src="${product.item.image}" alt="" >
-                                    <p class="titleItems">
-                                        awd
-                                    </p>
+                                    <p class="titleItems">awds</p>
                                     <p class="price">
-                                        <strong style="    color: #fd475a; font-size: 18px;" th:text="${product.prices()} +' ₫'"> 38,890,000 ₫</strong></p>
-                                        <div class="number">
-                                            <label >Số lượng</label>
-                                            <div class="control">
-                                                <button onclick="cartMinutes('MYX23VN');" id="cartMinutes">-</button>
-                                                <input type="number" onchange="cartChange('MYX23VN');"  pattern="[0-9]*"  th:value="${product.getQuantity()}">
-                                                <button onclick="cartPlus('MYX23VN');" data-sku="MYX23VN" id="cartPlus">+</button>
-                                            </div>
+                                        <strong style="color: #fd475a; font-size: 18px;" th:text="${product.prices()} +' ₫'">38,890,000 ₫</strong>
+                                    </p>
+                            
+                                    <div class="number">
+                                        <label>Số lượng</label>
+                                        <div class="control">
+                                            <button class="cartMinutes">-</button>
+                                            <input type="number" class="number-quantity" th:value="${product.getQuantity()}" data-product-id="${product.item.productID}" pattern="[0-9]*">
+                                            <button class="cartPlus">+</button>
                                         </div>
+                                    </div>
                                 </div>
+                                
                                 <div class="Items-infor">
                                     <div class="edit">
-                                        <a th:href="@{/cart/{masanpham}(masanpham=${product.item.productID})}" class="red"><i class="fa-solid fa-circle-xmark"></i></a>
-                                        
+                                        <a th:href="@{/cart/{masanpham}(masanpham=${product.item.productID})}" class="red">
+                                            <i class="fa-solid fa-circle-xmark"></i>
+                                        </a>
                                     </div>
                                     <div class="options">
                                         <div class="option">
@@ -69,18 +72,18 @@
                                                 <span th:text="${product.item.storage}">512GB</span>
                                             </label>
                                         </div>
-                
-                                    <div class="option">
-                                        <strong>Màu sắc</strong>
-                                        <label>
-                                            <i class="icon-checked"></i>
-                                            <span th:text="${product.item.color}">Titan Sa Mạc</span>
-                                        </label>
+                                        <div class="option">
+                                            <strong>Màu sắc</strong>
+                                            <label>
+                                                <i class="icon-checked"></i>
+                                                <span th:text="${product.item.color}">Titan Sa Mạc</span>
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
-                                </div>
                             </div>
-                            <div  th:unless="${listproduct != null}">Gio hang Rong</div>
+                            
+                            <div  th:unless="${listproduct != null}" th:text="${notfication}">Gio hang Rong</div>
                             <div class="cart-total" th:if="${listproduct != null}">
                                 <p>Tổng giá trị: <strong class="price" th:text="${totalpricess==null ?' ':totalpricess }+ ' ₫'">158,340,000 ₫</strong> </p>
                                     <p>Giảm giá: <strong class="price">-00 ₫</strong></p>
@@ -161,9 +164,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js" integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-  <!-- <script th:src="@{/js/addToCart.js}"></script> -->
-  <script th:src="@{/js/script.js}">
-</script>
+  <script th:src="@{/js/scriptorder.js}"></script>
+  <script th:src="@{/js/script.js}"></script>
 <script th:src="@{/js/orderscript.js}"></script>
 </body>
 </html>

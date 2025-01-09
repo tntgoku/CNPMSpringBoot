@@ -195,7 +195,7 @@ public class orderDTO {
             String sql = "UPDATE Orders SET " +
                         "UserID = ?, " +
                         "Nameuser = ?, " +
-                        "OrderDate = ?, " +
+                        "OrderDate = GETDATE(), " +
                         "AddressU = ?, " +
                         "Phone = ?, " +
                         "Email = ?, " +
@@ -206,7 +206,6 @@ public class orderDTO {
             return jdbcTemplate.update(sql, 
                                     order.getUserID(),
                                     order.getNameUser(),
-                                    order.getOrderDate(),
                                     order.getAddressU(),
                                     order.getPhone(),
                                     order.getEmail(),

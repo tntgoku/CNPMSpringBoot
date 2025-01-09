@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
 import backend.demo.DTO.orderDTO;
@@ -27,6 +28,7 @@ import backend.demo.Model.OrderInfo;
 import backend.demo.Model.cartItem;
 import backend.demo.Model.cartList;
 import backend.demo.Model.iPhone;
+import backend.demo.Model.orDers;
 import backend.demo.Model.paymentMethod;
 import backend.demo.Model.uSer;
 import backend.demo.Service.VNPayService;
@@ -53,12 +55,18 @@ public class ControllerOrder {
     }
 
 
-    @GetMapping("/order/ordersuccess")
-    public String getMethodName(HttpServletRequest request,Model model,HttpSession session) {
-        model.addAttribute("model","Temp");
+    // @GetMapping("/order/ordersuccess")
+    // public String getMethodName(HttpServletRequest request,Model model,HttpSession session) {
+    //     model.addAttribute("model","Temp");
 
-        System.out.println("\n\n\n\n\n\n\n\n\n\n\n"+session.getAttribute("listCart").toString());
-        return "/order/ordersuccess";
+    //     System.out.println("\n\n\n\n\n\n\n\n\n\n\n"+session.getAttribute("listCart").toString());
+    //     return "/order/ordersuccess";
+    // }
+    
+    @GetMapping("user/thanksuser")
+    public String getMethodName(Model model) {
+        model.addAttribute("successMessage","Gửi đơn hàng thành công");
+        return "thanksuser";
     }
     
     // Chuyển hướng người dùng đến cổng thanh toán VNPAY
@@ -70,8 +78,9 @@ public class ControllerOrder {
             Map<String, String> formData1 = (Map<String, String>) payload.get("formData");
             List<Map<String, Object>> products = (List<Map<String, Object>>) payload.get("products");
             Object value = payload.get("orderTotal");
-
+            String a=payload.get("selectedPayment").toString();
             session.setAttribute("formDataa", formData1);
+            
             // Ensure proper casting to Long, with handling for Integer or other numeric types
             Long orderTotal = (value instanceof Number) ? ((Number) value).longValue() : Long.parseLong(value.toString());
             products.add(formData);
@@ -90,7 +99,7 @@ public class ControllerOrder {
             System.out.println("OrderTotal: "+orderTotal);
             String vnpayUrl = vnPayService.createOrder(orderTotal, orderInfo, baseUrl,products,formData,id);
             System.out.println("URL tạo đơn hàng VNPay:\n" + vnpayUrl);
-            
+      
             // Trả về URL VNPay cho client để chuyển hướng
             return ResponseEntity.status(HttpStatus.OK)
                                  .body(Map.of("redirectUrl", vnpayUrl));
@@ -112,12 +121,23 @@ public class ControllerOrder {
         String paymentTime = request.getParameter("vnp_PayDate");
         String transactionId = request.getParameter("vnp_TransactionNo");
         String totalPrice = request.getParameter("vnp_Amount");
+        List<cartItem> lItems = (List<cartItem>)session.getAttribute("listCart");
 
 
         model.addAttribute("orderId", orderInfo);
-        model.addAttribute("totalPrice", totalPrice);
+        model.addAttribute("totalPrice", totalPrice+"\n"+lItems.toString());
         model.addAttribute("paymentTime", paymentTime);
         model.addAttribute("transactionId", transactionId);
+        model.addAttribute("infouser", ((Map<String, String>)session.getAttribute("formDataa")).toString());
+
+        Map<String, String> unforuser = (Map<String, String>)session.getAttribute("formDataa");
+        // String orderID, int userID, String nameUser, String addressU, String phone, String email, 
+        //                 double totalAmount, int status, int payment
+        // orderDTO.addOrder(orderDTO.generateOrderID(),15742,
+        //                     unforuser.get("fullName"),
+        //                     unforuser.get("address"),
+        //                     unforuser.get("number"),unforuser.get("emailuser"),
+        //                     );
          int i=Integer.parseInt(transactionId);
          System.out.println("\n\n\n\n\n");
         return paymentStatus == 1 ? "/order/ordersuccess" : "/cart";
@@ -135,4 +155,13 @@ public class ControllerOrder {
 		}
 		return reverseString;
 	}
+
+
+    @PostMapping("/cart/update")
+    @ResponseBody
+    public ResponseEntity<String> updateCart(@RequestBody Map<String, Object> payload) {
+        // Xử lý cập nhật số lượng sản phẩm trong giỏ hàng
+             
+        return ResponseEntity.ok("Cart updated successfully");
+    }
 }

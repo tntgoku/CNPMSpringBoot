@@ -32,9 +32,14 @@
           </div>
           <div class="user">
             <div th:if="${customer != null}" class="user-a">
-                <a th:href="@{/trangcanhan}">
+                <a th:href="@{/trangcanhan}" style="display: flex;justify-content: center;
+                align-items: center; gap: 5px;">
                     <i class="fa-regular fa-user" style="font-size: 23px;"></i>
-                    <span th:text="${customer.fullName}"></span>
+                    <span th:text="${customer.fullName}" style=" display: inline-block;
+                    width: 100px; /* Set max width */
+                    white-space: nowrap; /* Prevent line breaks */
+                    overflow: hidden; /* Hide text that overflows */
+                    text-overflow: ellipsis; /* Display '...' when text overflows */"></span>
                 </a>
                 <a th:href="@{/logout}">Logout</a>
             </div>

@@ -58,27 +58,6 @@ $(document).ready(function () {
         //ID
         const ID = $('#option-color .item-option.selected').data('skua');
         
-        // let cartList = JSON.parse(localStorage.getItem("listCart")) || []; // Nếu chưa có giỏ, khởi tạo mảng trống
-        
-        //  // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
-        //  let itemExists = false;
-        //  for (let i = 0; i < cartList.length; i++) {
-        //      if (cartList[i].IDP === ID) {
-        //          // Nếu sản phẩm đã tồn tại, tăng số lượng lên
-        //          cartList[i].quantity += parseInt(quantity);
-        //          itemExists = true;
-        //          break;
-        //      }
-        //  }
- 
-        //  // Nếu sản phẩm chưa có trong giỏ, thêm mới
-        //  if (!itemExists) {
-        //      cartList.push({ IDP: ID,color:color ,quantity: parseInt(quantity) });
-        //  }
- 
-         // Lưu lại giỏ hàng vào localStorage
-        //  localStorage.setItem("listCart", JSON.stringify(cartList));
-        // Gửi yêu cầu AJAX để thêm vào giỏ
         $.ajax({
             url: currentUrl,
             type: 'POST',

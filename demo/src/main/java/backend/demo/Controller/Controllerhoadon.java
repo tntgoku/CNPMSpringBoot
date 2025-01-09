@@ -20,6 +20,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 @Controller
@@ -58,7 +61,7 @@ public class Controllerhoadon {
         }
         for (orDers product : list) {
             int status = product.getPayment();
-            String statusText = tempa.stream()
+            String statusText = tempb.stream()
                                           .filter(map -> map.containsKey(status))
                                           .map(map -> map.get(status))
                                           .findFirst()
@@ -99,6 +102,44 @@ public class Controllerhoadon {
         model.addAttribute("productss",listdeDetails);
         model.addAttribute("listpayment", status1);
         model.addAttribute("total", total);
+        return "/admin/mainhoadon/Update";
+    }
+    
+
+    @PostMapping("/admin/hoadon/UpdatePro/{masanpham}")
+    public String UpdateorderName(@PathVariable("masanpham") String id,
+    @RequestParam("select-order") String i,
+    Model model) {
+        //TODO: process POST request
+        List<OrderDetails> listdeDetails=new ArrayList<>();
+        List<Map<Integer,String>> tempa=new ArrayList<>();
+        List<Map<Integer,String>> tempb=new ArrayList<>();
+        orDers oDerstemp = orDto.findOrDersbyID(id);
+        listdeDetails=orDto.findDetailsImg(oDerstemp.getOrderID());
+        NumberFormat formatter = NumberFormat.getNumberInstance(Locale.US);
+        String formattedNumber = formatter.format(oDerstemp.getTotalAmount());
+        String total= formattedNumber;
+        oDerstemp.setOrderDetails(listdeDetails);
+        tempa=orDto.getlistStatus();
+        tempb=orDto.getlistPayment();
+        Map<Integer, String> status = new HashMap<>();
+        status.put(0, "Chờ xác nhận");
+        status.put(1, "Chờ lấy hàng");
+        status.put(2, "Chờ giao hàng");
+        status.put(3, "Giao hàng thành công");
+        Map<Integer, String> status1 = new HashMap<>();
+        status1.put(0, "COD");
+        status1.put(1, "VNPAY");
+        status1.put(2, "MOMO");
+        model.addAttribute("liststatus", status);
+        model.addAttribute("producta", oDerstemp);
+        model.addAttribute("productss",listdeDetails);
+        model.addAttribute("listpayment", status1);
+        model.addAttribute("total", total);
+       oDerstemp.setStatus(Integer.parseInt(i));
+       if(orDto.updateOrder(oDerstemp)!=-1){
+           model.addAttribute("successfully", "Update thanh cong");
+        }
         return "/admin/mainhoadon/Update";
     }
     

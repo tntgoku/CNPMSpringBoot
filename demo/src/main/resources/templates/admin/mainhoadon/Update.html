@@ -22,17 +22,6 @@
             <div class="sidebar-button" >
                 <span style="font-size: 35px;">DANH SÁCH HÓA ĐƠN</span>
             </div>
-            <div class="profile-user">
-                <img src="/img/item/a3.png" width="40px" alt="">
-                <span class="name-user" style="
-                font-size: 16px;
-                font-weight: 600;">aadwawd</span>
-                <div class="icondown" style="cursor: pointer;">
-                    <i class="fa-solid fa-chevron-down"></i>
-                    <div class="box-user">
-                    </div>
-                </div>
-            </div>
         </nav>
         <div class="container-fluid">
             <div class="card">
@@ -41,6 +30,7 @@
                 </div>
             </div>
             <div class="card-body " style="">
+                <h1 th:if="${successfully!=null}" th:text="${successfully}" style="color: #609232;"></h1>
             <form action="" method="post" style="background :#e4e9f7; padding: 10px;" enctype="multipart/form-data">
                     <div class="form-group" style="margin-top: 10px;">
                         <label for="" >Mã hóa đơn</label>
@@ -67,7 +57,7 @@
                     <div class="infor-userbuy" style="margin: 10px 0;">
                         <div class="form-1">
                             <label for="">Phương thức thanh toán:</label>
-                            <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
+                            <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref" >
                                 <option  th:each="entry: ${listpayment}"th:value="${entry.key}" 
                                 th:text="${entry.value}" 
                                 th:selected="${entry.key == producta.getPayment()}">
@@ -77,7 +67,7 @@
                         </div>
                         <div class="form-1">
                             <label for="">Trạng thái đơn hàng: </label>
-                            <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
+                            <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref" name="select-order">
 
                                 <option  th:each="entry: ${liststatus}"th:value="${entry.key}" 
                                 th:text="${entry.value}" 

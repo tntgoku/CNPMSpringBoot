@@ -22,6 +22,33 @@ $(document).ready(function () {
 });
 
 
+document.addEventListener("DOMContentLoaded", function() {
+    const deleteButtons = document.querySelectorAll(".btn-deleted-produt");
+
+    deleteButtons.forEach(button => {
+        button.addEventListener("click", function() {
+            const productId = button.getAttribute("data-id");
+
+            if (confirm("Bạn có chắc chắn muốn xóa sản phẩm này không?")) {
+                fetch(`/admin/productphone/${productId}`, {
+                    method: 'DELETE'
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert("Xóa thành công sản phẩm: " + productId);
+                        window.location.reload(); // Refresh trang sau khi xóa
+                    } else {
+                        alert("Có lỗi xảy ra khi xóa sản phẩm.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    alert("Không thể kết nối tới server.");
+                });
+            }
+        });
+    });
+});
 
 // $(document).ready(function() {
 //     $('#searchForm').on('submit', function(event) {

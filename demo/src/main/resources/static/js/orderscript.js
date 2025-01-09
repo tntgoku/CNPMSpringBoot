@@ -50,10 +50,14 @@ $(document).ready(function () {
             return;
         }
 
+        if (products.length === 0) {
+            alert("Không có sản phẩm nào trong giỏ hàng. Vui lòng thêm sản phẩm trước khi đặt hàng.");
+            return;
+        }
         if (paymentMethod === "1") {
             // Send POST request for payment method 1
             $.ajax({
-                url: '/gotoalert', // Your Spring Boot API
+                url: '/user/thanksuser', // Your Spring Boot API
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({
@@ -107,4 +111,69 @@ $(document).ready(function(){
         event.preventDefault(); 
         $('html, body').animate({ scrollTop: 0 }, 'slow'); // Cuộn lên đầu trang với hiệu ứng.
     })
-})
+});
+
+
+// Lấy tất cả các nút giảm và tăng
+document.querySelectorAll('.cartMinutes').forEach(button => {
+    button.addEventListener('click', (e) => {
+        const quantityInput = e.target.closest('.control').querySelector('.number-quantity');
+        let currentValue = parseInt(quantityInput.value) || 0;
+
+        if (currentValue > 1) {
+            quantityInput.value = currentValue - 1;
+        }
+
+        updateCartItem(
+            quantityInput.dataset.productId,  // Lấy ID sản phẩm từ data attribute
+            quantityInput.closest('.image-product').dataset.productColor,  // Lấy màu sản phẩm
+            quantityInput.value  // Số lượng mới
+        );
+    });
+});
+
+document.querySelectorAll('.cartPlus').forEach(button => {
+    button.addEventListener('click', (e) => {
+        const quantityInput = e.target.closest('.control').querySelector('.number-quantity');
+        let currentValue = parseInt(quantityInput.value) || 0;
+        quantityInput.value = currentValue + 1;
+
+        updateCartItem(
+            quantityInput.dataset.productId,
+            quantityInput.closest('.image-product').dataset.productColor,
+            quantityInput.value
+        );
+    });
+});
+
+// Đảm bảo chỉ nhận giá trị số trong input
+document.querySelectorAll('.number-quantity').forEach(input => {
+    input.addEventListener('input', (e) => {
+        if (e.target.value < 1) {
+            e.target.value = 1;
+        }
+    });
+});
+
+// Hàm gửi yêu cầu sửa đổi thông tin sản phẩm trong giỏ hàng
+function updateCartItem(productId, color, newQuantity) {
+    const requestBody = {
+        IDP: productId,
+        quantity: newQuantity,
+        Color: color
+    };
+    const currentUrl = window.location.href;
+    $.ajax({
+        url: currentUrl,  // URL của endpoint update
+        method: 'PUT',  // Hoặc 'PATCH' nếu muốn sửa một phần
+        contentType: 'application/json',
+        data: JSON.stringify(requestBody),
+        success: function(response) {
+            console.log('Sản phẩm đã được cập nhật', response);
+            // Cập nhật giao diện nếu cần
+        },
+        error: function(error) {
+            console.log('Có lỗi xảy ra khi cập nhật sản phẩm', error);
+        }
+    });
+}

@@ -33,8 +33,8 @@
 
                   <div class="card-banner img-holder" style="--width: 384; --height: 480;">
                     <!-- Đường dẫn hình ảnh sản phẩm -->
-                     <a >
-                       <img th:src="${product.image}" width="384" height="480" loading="lazy" alt="Black Night" class="img-cover">
+                     <a  th:href="@{details/{loaisanpham}/{tensanpham}/{storage}(loaisanpham=${product.categoryID},tensanpham=${product.productName},storage=${product.storage})}">
+                       <img th:src="@{${product.image}}" width="384" height="480" loading="lazy" alt="Black Night" class="img-cover">
 
                       </a>
                     <div class="card-action">

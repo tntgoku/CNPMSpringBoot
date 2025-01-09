@@ -71,9 +71,11 @@
                                         <!-- totalAmount -->
                                         <td th:text="${product.totalAmount}" ></td>
                                         <!-- status -->
-                                        <td  th:text="${product.getStatusText()}">>%</td>
-                                        <!-- payment -->
-                                        <td th:text="${product.getpaymentText()}" ></td>
+                                        <td th:text="${product.getStatusText()}"
+                                        th:attr="style=${product.status == 0 ? 'color: black;' : (product.status == 1 ? 'color: green;' : (product.status == 3 ? 'font-weight: bold; color: green;' : ''))}">
+                                    </td>
+                                    <!-- payment -->
+                                        <td th:text="${product.getpaymentText()}"   ></td>
                                         <td ><a th:href="@{/admin/hoadon/UpdatePro/{masanpham}(masanpham=${product.orderID})}">
                                              <button type="button" class="btn btn-success">Sửa</button></a></td>
                                         <td>

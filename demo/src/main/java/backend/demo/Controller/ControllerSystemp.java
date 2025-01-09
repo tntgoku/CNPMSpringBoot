@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -207,8 +208,8 @@ public class ControllerSystemp {
         return ResponseEntity.ok("Gia tri:  "+requestBody.toString()+"\n"+notice+"\nSession: "+session.getAttribute("listCart").toString());
     }
     
-    
- 
+
+
     @GetMapping("/logout")
         public String logout(HttpSession session) {
             session.invalidate(); // Xóa toàn bộ session
@@ -263,6 +264,93 @@ public class ControllerSystemp {
     }
     
 
+    @PostMapping("/cart/{masanpham}")
+    public String getcartpage(
+    @RequestParam("masanpham")String id,    
+    HttpSession session,Model model, HttpServletRequest request ) {
+
+        List<paymentMethod>listpayment=new ArrayList<>();
+        listpayment.add(new paymentMethod("Thanh toán khi nhận hàng",1));
+        listpayment.add(new paymentMethod("Thanh toán VNPAY",2));
+        listpayment.add(new paymentMethod("Thanh toán MOMO",3));
+        Object listCartAttr = session.getAttribute("listCart");
+        if (listCartAttr == null) {
+            System.out.println("\n\n\nGiỏ hàng: null");
+        } else {
+            System.out.println("\n\n\nGiỏ hàng: " + listCartAttr.toString());
+        }
+        List<cartItem> lItems = (List<cartItem>)session.getAttribute("listCart");
+
+        List<cartList> listitem=new ArrayList<>();
+        if (lItems==null ) {
+            lItems= new ArrayList<>();
+        }
+        if (lItems.isEmpty()) {
+            model.addAttribute("notfication","Giỏ hàng rỗng!");
+        }else{
+            for (cartItem cartList : lItems) {
+                iPhone s=productO.getProductById(cartList.getIDP());
+                if(s!=null){
+                    listitem.add(new cartList(s,cartList.getQuantity(),cartList.getPrices()));
+                }
+            }
+        }
+        int sumer=0;
+        for (cartList cartList : listitem) {
+            sumer+=cartList.getTotalPrice();
+        }
+        model.addAttribute("listproduct", listitem);
+        model.addAttribute("totalpricess",converNumber(sumer).toString());
+        model.addAttribute("totalpricess1",sumer);
+        model.addAttribute("listpayment", listpayment);
+        System.out.println("\n\n\n\n\n\n\n\n\nHTTPREQUEST"+request.toString());
+        return "cart";
+    }
+    
+ 
+    @PutMapping("/cart")
+    public ResponseEntity<String> updateCartItem(@RequestBody Map<String, Object> requestBody, HttpSession session) {
+        boolean checkID = false;
+        String notice = "Cập nhật sản phẩm thành công!";
+        int total = 0;
+
+        // Lấy giỏ hàng từ session, nếu chưa có thì khởi tạo mới
+        List<cartItem> cartList = (List<cartItem>) session.getAttribute("listCart");
+        if (cartList == null) {
+            cartList = new ArrayList<>();
+        }
+
+        // Lấy thông tin sản phẩm từ requestBody
+        int id = Integer.parseInt(requestBody.get("IDP").toString());
+        int quantity = Integer.parseInt(requestBody.get("quantity").toString());
+        String color = requestBody.get("Color").toString();
+
+        // Duyệt qua giỏ hàng để tìm sản phẩm và cập nhật
+        for (cartItem item : cartList) {
+            if (item.getIDP() == id && item.getColor().equals(color)) {
+                item.setQuantity(quantity);  // Cập nhật số lượng sản phẩm
+                checkID = true;
+                break;
+            }
+        }
+
+        // Nếu không tìm thấy sản phẩm, trả về thông báo lỗi
+        if (!checkID) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Sản phẩm không tồn tại trong giỏ hàng.");
+        }
+
+        // Cập nhật lại giỏ hàng vào session
+        session.setAttribute("listCart", cartList);
+
+        // Tính tổng số lượng sản phẩm trong giỏ hàng
+        for (cartItem item : cartList) {
+            total += item.getQuantity();
+        }
+
+        // Trả về thông báo
+        return ResponseEntity.ok(notice + " Tổng sản phẩm trong giỏ: " + total);
+    }
 
 
 }
